@@ -1,5 +1,5 @@
 # =============================================================================
-# Cross-Validation Test on Cobb-Douglas Dataset
+# Cross-Validation on Cobb--Douglas Dataset
 # =============================================================================
 
 
@@ -10,7 +10,13 @@ from sklearn.model_selection import (KFold, LeaveOneOut, LeavePOut,
                                      RepeatedKFold, ShuffleSplit,
                                      TimeSeriesSplit)
 
+# =============================================================================
+# Make Dataset
+# =============================================================================
 X, y = get_data_frame().pipe(get_X_y)
+# =============================================================================
+# cross_validator
+# =============================================================================
 # =============================================================================
 # K-Fold
 # =============================================================================
@@ -30,35 +36,45 @@ loo = LeaveOneOut()
 # =============================================================================
 # Leave P Out (LPO)
 # =============================================================================
+lpo = LeavePOut(p=2)
+
 # =============================================================================
 # Random Permutations Cross-Validation a.k.a. Shuffle & Split
 # =============================================================================
-
-lpo = LeavePOut(p=2)
-
 ss = ShuffleSplit(n_splits=2, test_size=.25, random_state=0)
 # =============================================================================
 # Time Series Split
 # =============================================================================
 tscv = TimeSeriesSplit(n_splits=3)
-plt.figure()
-plt.scatter(X, y)
-f1p = np.polyfit(X, y, deg=1)
-k, b = f1p
-Z = b+k*X
-plt.plot(X, Z)
-# for _, (train, test) in kf.split(X):
-# for _, (train, test) in rkf.split(X):
-# for _, (train, test) in loo.split(X):
-# for _, (train, test) in lpo.split(X):
-# for _, (train, test) in ss.split(X):
-for _, (train, test) in enumerate(tscv.split(X), start=1):
-    f1p = np.polyfit(X[train], y[train], deg=1)
-    k, b = f1p
-    Z = b+k*X
-    plt.plot(X, Z, label='Test %02d' % _)
-    b = np.exp(b)
 
+plt.figure(0)
+plt.scatter(X, y)
+polyfit_linear = np.polyfit(X.flatten(), y, deg=1)
+y_pred = np.poly1d(polyfit_linear)(X)
+
+# =============================================================================
+# https://numpy.org/doc/stable/reference/generated/numpy.poly1d.html
+# =============================================================================
+# =============================================================================
+# https://numpy.org/doc/stable/reference/generated/numpy.polyval.html
+# =============================================================================
+
+
+plt.plot(X.flatten(), y_pred)
+_b = np.exp(polyfit_linear[1])
+print(_b)
 plt.legend()
 plt.grid()
 plt.show()
+for _num, cross_validator in enumerate((kf, rkf, loo, lpo, ss, tscv), start=1):
+    plt.figure(_num)
+    for _, (train, test) in enumerate(cross_validator.split(X), start=1):
+        polyfit_linear = np.polyfit(X[train].flatten(), y[train], deg=1)
+        y_train_pred = np.poly1d(polyfit_linear)(X[train])
+        plt.plot(X[train], y_train_pred, label=f'Split {_:02}')
+        _b = np.exp(polyfit_linear[1])
+        print(_b)
+    plt.legend()
+    plt.grid()
+    plt.show()
+
