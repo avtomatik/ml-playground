@@ -10,10 +10,9 @@ Created on Tue Apr  4 21:14:17 2023
 import pandas as pd
 from data.pull import pull_by_series_id
 from data.read import read_usa_hist
-from pandas import DataFrame
 
 
-def stockpile_usa_hist(series_ids: dict[str, str]) -> DataFrame:
+def stockpile_usa_hist(series_ids: dict[str, str]) -> pd.DataFrame:
     """
     Parameters
     ----------
@@ -21,7 +20,7 @@ def stockpile_usa_hist(series_ids: dict[str, str]) -> DataFrame:
         DESCRIPTION.
     Returns
     -------
-    DataFrame
+    pd.DataFrame
         ================== =================================
         df.index           Period
         ...                ...
@@ -29,13 +28,12 @@ def stockpile_usa_hist(series_ids: dict[str, str]) -> DataFrame:
         ================== =================================
     """
     return pd.concat(
-        [
-            read_usa_hist(archive_name).sort_index().pipe(
-                pull_by_series_id, series_id
-            )
-            for series_id, archive_name in series_ids.items()
-        ],
+        map(
+            lambda _: read_usa_hist(_[1]).sort_index().pipe(
+                pull_by_series_id, _[0]
+            ),
+            series_ids.items()
+        ),
         axis=1,
-        verify_integrity=True,
         sort=True
     )
