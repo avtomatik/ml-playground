@@ -1,15 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Jun 14 20:45:47 2020
-
-@author: Alexander Mikhailov
-"""
-
-
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
 
-from paths import DATA_DIR
+from core.paths import DATA_DIR
 
 
 def main(file_name: str = "trips_data.xlsx") -> None:
@@ -27,7 +19,3 @@ def main(file_name: str = "trips_data.xlsx") -> None:
     output_data = trips_processed.target
     classifier.fit(input_data, output_data)
     print({col: 0 for col in trips_processed.columns})
-
-
-if __name__ == "__main__":
-    main()

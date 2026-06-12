@@ -1,17 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Jan  8 21:24:18 2023
-
-@author: green-machine
-"""
-
-
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import Lasso
 
-from data.make_dataset import get_data_frame, get_X_y
+from datasets.cobb_douglas import load as load_cobb_douglas
 
 
 def main() -> None:
@@ -27,7 +18,10 @@ def main() -> None:
     # =========================================================================
     # Make Dataset
     # =========================================================================
-    X, y = get_data_frame().pipe(get_X_y)
+    df = load_cobb_douglas()
+
+    X = df[["labor_capital_intensity"]]
+    y = df["labor_productivity"]
     # =========================================================================
     # Process Dataset
     # =========================================================================

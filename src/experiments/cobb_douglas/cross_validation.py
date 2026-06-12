@@ -13,12 +13,15 @@ from sklearn.model_selection import (KFold, LeaveOneOut, LeavePOut,
                                      RepeatedKFold, ShuffleSplit,
                                      TimeSeriesSplit)
 
-from data.make_dataset import get_data_frame, get_X_y
+from datasets.cobb_douglas import load as load_cobb_douglas
 
 # =============================================================================
 # Make Dataset
 # =============================================================================
-X, y = get_data_frame().pipe(get_X_y)
+df = load_cobb_douglas()
+
+X = df[["labor_capital_intensity"]]
+y = df["labor_productivity"]
 
 # =============================================================================
 # Cross Validation

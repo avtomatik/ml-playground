@@ -1,19 +1,39 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Apr  9 20:20:01 2023
-
-@author: green-machine
-"""
-
-
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.model_selection import KFold, LeaveOneOut, cross_val_score
+from sklearn.preprocessing import PolynomialFeatures
 
-from data.make_dataset import get_data_frame, get_X_y
+from datasets.cobb_douglas import load as load_cobb_douglas
+
+if __name__ == "__main__":
+    # =========================================================================
+    # Make Dataset
+    # =========================================================================
+    df = load_cobb_douglas()
+
+    X = df[["labor_capital_intensity"]]
+    y = df["labor_productivity"]
+
+    lr = LinearRegression()
+    pr = LinearRegression()
+    quadratic = PolynomialFeatures(degree=2)
+    X_quad = quadratic.fit_transform(X)
+
+    lr.fit(X, y)
+    X_fit = np.arange(X.min(), X.max(), 1)[:, np.newaxis]
+    y_lin_fit = lr.predict(X_fit)
+
+    pr.fit(X_quad, y)
+    y_quad_fit = pr.predict(quadratic.fit_transform(X_fit))
+
+    plt.scatter(X, y, label="Trained")
+    plt.plot(X_fit, y_lin_fit, label="Linear", linestyle="--")
+    plt.plot(X_fit, y_quad_fit, label="Quadratic")
+    plt.legend(loc="upper left")
+    plt.grid()
+    plt.show()
 
 
 def calculate_graph_k_folds_linear_regression(
@@ -85,14 +105,3 @@ def get_neg_mean_squared_error_leave_one_out(
         solver, X, y, scoring="neg_mean_squared_error", cv=loo
     )
     print(f"Mean of `neg_mean_squared_error`: {scores.mean():,.6f}")
-
-
-if __name__ == "__main__":
-    # =========================================================================
-    # Make Dataset
-    # =========================================================================
-    X, y = get_data_frame().pipe(get_X_y)
-
-    calculate_graph_k_folds_linear_regression(X, y)
-    compare_r2s_print_out_coefs(X, y)
-    get_neg_mean_squared_error_leave_one_out(X, y)

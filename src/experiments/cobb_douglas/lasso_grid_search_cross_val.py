@@ -1,23 +1,13 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed May  7 20:00:00 2025
-
-@author: alexandermikhailov
-"""
-
-
 import numpy as np
 from sklearn.linear_model import Lasso
 from sklearn.model_selection import GridSearchCV, train_test_split
 
-from data.make_dataset import get_data_frame, get_X_y
-from src.data.transform import transform_cobb_douglas
+from datasets.cobb_douglas import load as load_cobb_douglas
 
-# =============================================================================
-# Make Dataset
-# =============================================================================
-X, y = get_data_frame().pipe(get_X_y)
+df = load_cobb_douglas()
+
+X = df[["labor_capital_intensity"]]
+y = df["labor_productivity"]
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.4, random_state=0
@@ -35,15 +25,9 @@ model.fit(X_train, y_train)
 model.score(X_test, y_test)
 y_test_pred = model.predict(X_test)
 
-
 # =============================================================================
 # usa_cobb_douglas0014.py
 # =============================================================================
 # =============================================================================
 # TODO: Revise Fixed Assets Turnover Approximation with Lasso
 # =============================================================================
-print(
-    get_data_frame()
-    .pipe(transform_cobb_douglas, year_base=1899)[0]
-    .iloc[:, [6]]
-)

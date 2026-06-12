@@ -1,16 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Apr  5 22:12:38 2023
-
-@author: alexandermikhailov
-"""
-
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from numpy.fft import rfft
 from sklearn.metrics import r2_score
 
 
@@ -101,38 +91,6 @@ def plot_turnover(df: pd.DataFrame) -> None:
     )
     plt.xlabel("Period")
     plt.ylabel("Index")
-    plt.grid()
-    plt.legend()
-    plt.show()
-
-
-def plot_discrete_fourier_transform(array: np.ndarray) -> None:
-    """
-    Discrete Fourier Transform
-
-    Parameters
-    ----------
-    array : np.ndarray
-        DESCRIPTION.
-
-    Returns
-    -------
-    None
-        DESCRIPTION.
-
-    """
-    # =========================================================================
-    # TODO: Refine It
-    # =========================================================================
-    plt.plot(
-        array,
-        label="Labor Productivity",
-    )
-    plt.plot(
-        rfft(array),
-        "r:",
-        label="Fourier Transform",
-    )
     plt.grid()
     plt.legend()
     plt.show()

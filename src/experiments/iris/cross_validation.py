@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Apr  8 01:09:35 2023
-
-@author: green-machine
-"""
-
-
 import numpy as np
 from sklearn.datasets import load_iris
 from sklearn.model_selection import (ShuffleSplit, cross_val_score,
@@ -88,7 +79,3 @@ def main() -> None:
     scores = cross_val_score(estimator, X, y, cv=cross_validator)
     print("Cross Validation: Composite Estimator")
     print(f"Accuracy: {scores.mean():,.4f} (+/- {2 * scores.std():,.4f})")
-
-
-if __name__ == "__main__":
-    main()

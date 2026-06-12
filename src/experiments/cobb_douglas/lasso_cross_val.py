@@ -1,17 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Apr  9 21:24:17 2023
-
-@author: green-machine
-"""
-
-
 import numpy as np
 from sklearn.linear_model import LassoCV
 from sklearn.metrics import r2_score
 
-from data.make_dataset import get_data_frame, get_X_y
+from datasets.cobb_douglas import load as load_cobb_douglas
 
 
 def compare_r2s_print_out_coefs(X: np.ndarray, y: np.ndarray) -> None:
@@ -34,6 +25,9 @@ if __name__ == "__main__":
     # =========================================================================
     # Make Dataset
     # =========================================================================
-    X, y = get_data_frame().pipe(get_X_y)
+    df = load_cobb_douglas()
+
+    X = df[["labor_capital_intensity"]]
+    y = df["labor_productivity"]
 
     compare_r2s_print_out_coefs(X, y)
