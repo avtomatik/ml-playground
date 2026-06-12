@@ -9,16 +9,15 @@ Created on Sun Apr  9 20:20:01 2023
 
 import matplotlib.pyplot as plt
 import numpy as np
-from data.make_dataset import get_data_frame, get_X_y
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.model_selection import KFold, LeaveOneOut, cross_val_score
 
+from data.make_dataset import get_data_frame, get_X_y
+
 
 def calculate_graph_k_folds_linear_regression(
-    X: np.ndarray,
-    y: np.ndarray,
-    n_splits: int = 6
+    X: np.ndarray, y: np.ndarray, n_splits: int = 6
 ) -> None:
     solver = LinearRegression().fit(X, y)
     # =========================================================================
@@ -35,16 +34,18 @@ def calculate_graph_k_folds_linear_regression(
         y_pred = solver.predict(X)
 
     plt.figure()
-    plt.scatter(X, y, label='Original')
-    plt.scatter(X, y_container, label='Linear Fit, K-Folds cross-validator')
-    plt.scatter(X, y_pred, label='Linear Fit, Cumulative')
-    plt.title('`Labor Productivity` over `Labor Capital Intensity`, 1899--1922')
-    plt.xlabel('Labor Capital Intensity')
-    plt.ylabel('Labor Productivity')
+    plt.scatter(X, y, label="Original")
+    plt.scatter(X, y_container, label="Linear Fit, K-Folds cross-validator")
+    plt.scatter(X, y_pred, label="Linear Fit, Cumulative")
+    plt.title(
+        "`Labor Productivity` over `Labor Capital Intensity`, 1899--1922"
+    )
+    plt.xlabel("Labor Capital Intensity")
+    plt.ylabel("Labor Productivity")
     plt.legend()
     plt.grid()
     plt.show()
-    print('Figure Has Been Plotted')
+    print("Figure Has Been Plotted")
 
 
 def compare_r2s_print_out_coefs(X: np.ndarray, y: np.ndarray) -> None:
@@ -60,14 +61,14 @@ def compare_r2s_print_out_coefs(X: np.ndarray, y: np.ndarray) -> None:
     print(solver.coef_)
     print(solver.intercept_)
     print(
-        f'R**2 Powered by sklearn.linear_model.LinearRegression: {r2_solver:.6}'
+        f"R**2 Powered by sklearn.linear_model.LinearRegression: {r2_solver:.6}"
     )
-    print(
-        f'R**2 Powered by sklearn.metrics.r2_score: {r2_metrics:.6}'
-    )
+    print(f"R**2 Powered by sklearn.metrics.r2_score: {r2_metrics:.6}")
 
 
-def get_neg_mean_squared_error_leave_one_out(X: np.ndarray, y: np.ndarray) -> None:
+def get_neg_mean_squared_error_leave_one_out(
+    X: np.ndarray, y: np.ndarray
+) -> None:
     """
     Cross Validation
 
@@ -81,12 +82,12 @@ def get_neg_mean_squared_error_leave_one_out(X: np.ndarray, y: np.ndarray) -> No
     loo = LeaveOneOut()
 
     scores = cross_val_score(
-        solver, X, y, scoring='neg_mean_squared_error', cv=loo
+        solver, X, y, scoring="neg_mean_squared_error", cv=loo
     )
-    print(f'Mean of `neg_mean_squared_error`: {scores.mean():,.6f}')
+    print(f"Mean of `neg_mean_squared_error`: {scores.mean():,.6f}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # =========================================================================
     # Make Dataset
     # =========================================================================

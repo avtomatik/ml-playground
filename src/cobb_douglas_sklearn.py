@@ -9,7 +9,6 @@ Created on Thu Nov 24 13:45:36 2022
 
 import matplotlib.pyplot as plt
 import numpy as np
-from data.make_dataset import get_data_frame, get_X_y
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression, RANSACRegressor
 from sklearn.metrics import mean_squared_error, r2_score
@@ -19,14 +18,16 @@ from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
 
+from data.make_dataset import get_data_frame, get_X_y
+
 
 def lin_regplot(X, y, model):
-    plt.scatter(X, y, c='blue')
-    plt.plot(X, model.predict(X), color='red')
+    plt.scatter(X, y, c="blue")
+    plt.plot(X, model.predict(X), color="red")
     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # =========================================================================
     # Make Dataset
     # =========================================================================
@@ -52,7 +53,7 @@ if __name__ == '__main__':
     plt.show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # =========================================================================
     # Make Dataset
     # =========================================================================
@@ -92,30 +93,35 @@ if __name__ == '__main__':
     # =========================================================================
     plt.scatter(X, y, label="Train", color="lightgray")
     plt.plot(
-        X_fit, y_lin_fit,
+        X_fit,
+        y_lin_fit,
         label=f"Linear (d=1), $R^2={linear_r2:,.4f}$",
         color="blue",
         lw=2,
-        linestyle=":"
+        linestyle=":",
     )
     plt.plot(
-        X_fit, y_quad_fit,
+        X_fit,
+        y_quad_fit,
         label=f"Linear (d=2), $R^2={quadratic_r2:,.4f}$",
-        color="red", lw=2, linestyle="-"
+        color="red",
+        lw=2,
+        linestyle="-",
     )
     plt.plot(
-        X_fit, y_cubic_fit,
+        X_fit,
+        y_cubic_fit,
         label=f"Linear (d=2), $R^2={cubic_r2:,.4f}$",
         color="green",
         lw=2,
-        linestyle="--"
+        linestyle="--",
     )
     plt.legend(loc="upper left")
     plt.grid()
     plt.show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # =========================================================================
     # Make Dataset
     # =========================================================================
@@ -132,14 +138,14 @@ if __name__ == '__main__':
     plt.show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # =========================================================================
     # Make Dataset
     # =========================================================================
     X, y = get_data_frame().pipe(get_X_y)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=.45, random_state=1
+        X, y, test_size=0.45, random_state=1
     )
 
     forest = RandomForestRegressor(
@@ -150,20 +156,22 @@ if __name__ == '__main__':
     y_test_pred = forest.predict(X_test)
 
     plt.scatter(
-        y_train_pred, y_train_pred - y_train,
+        y_train_pred,
+        y_train_pred - y_train,
         c="black",
         marker="o",
         s=35,
-        alpha=.5,
-        label="Train"
+        alpha=0.5,
+        label="Train",
     )
     plt.scatter(
-        y_test_pred, y_test_pred - y_test,
+        y_test_pred,
+        y_test_pred - y_test,
         c="lightgreen",
         marker="s",
         s=35,
-        alpha=.7,
-        label="Test"
+        alpha=0.7,
+        label="Test",
     )
     plt.xlabel("Predicted")
     plt.ylabel("Residuals")
@@ -173,20 +181,21 @@ if __name__ == '__main__':
     plt.grid()
     plt.show()
     print(
-        f"MSE on Train Data: {mean_squared_error(y_train, y_train_pred):,.4f}")
+        f"MSE on Train Data: {mean_squared_error(y_train, y_train_pred):,.4f}"
+    )
     print(f"MSE on Test Data: {mean_squared_error(y_test, y_test_pred):,.4f}")
     print(f"R**2 on Train Data: {r2_score(y_train, y_train_pred):,.4f}")
     print(f"R**2 on Test Data: {r2_score(y_test, y_test_pred):,.4f}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # =========================================================================
     # Make Dataset
     # =========================================================================
     X, y = get_data_frame().pipe(get_X_y)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=.45, random_state=1
+        X, y, test_size=0.45, random_state=1
     )
 
     solver = make_pipeline(StandardScaler(), SVR(C=1.0, epsilon=0.2))
@@ -196,20 +205,22 @@ if __name__ == '__main__':
     y_test_pred = solver.predict(X_test)
 
     plt.scatter(
-        y_train_pred, y_train_pred - y_train,
+        y_train_pred,
+        y_train_pred - y_train,
         c="black",
         marker="o",
         s=35,
-        alpha=.5,
-        label="Train"
+        alpha=0.5,
+        label="Train",
     )
     plt.scatter(
-        y_test_pred, y_test_pred - y_test,
+        y_test_pred,
+        y_test_pred - y_test,
         c="lightgreen",
         marker="s",
         s=35,
-        alpha=.7,
-        label="Test"
+        alpha=0.7,
+        label="Test",
     )
     plt.xlabel("Predicted")
     plt.ylabel("Residuals")
@@ -219,27 +230,30 @@ if __name__ == '__main__':
     plt.grid()
     plt.show()
     print(
-        f"MSE on Train Data: {mean_squared_error(y_train, y_train_pred):,.4f}")
+        f"MSE on Train Data: {mean_squared_error(y_train, y_train_pred):,.4f}"
+    )
     print(f"MSE on Test Data: {mean_squared_error(y_test, y_test_pred):,.4f}")
     print(f"R**2 on Train Data: {r2_score(y_train, y_train_pred):,.4f}")
     print(f"R**2 on Test Data: {r2_score(y_test, y_test_pred):,.4f}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # =========================================================================
     # Make Dataset
     # =========================================================================
     X, y = get_data_frame().pipe(get_X_y)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=.4, random_state=1
+        X, y, test_size=0.4, random_state=1
     )
 
-    ransac = RANSACRegressor(LinearRegression(),
-                             max_trials=100,
-                             min_samples=10,
-                             residual_threshold=.05,
-                             random_state=0)
+    ransac = RANSACRegressor(
+        LinearRegression(),
+        max_trials=100,
+        min_samples=10,
+        residual_threshold=0.05,
+        random_state=0,
+    )
     ransac.fit(X, y)
 
     inlier_mask = ransac.inlier_mask_
@@ -248,10 +262,16 @@ if __name__ == '__main__':
     line_X = np.arange(X.min(), X.max(), 1)
     line_y_ransac = ransac.predict(line_X[:, np.newaxis])
 
-    plt.scatter(X[inlier_mask], y[inlier_mask],
-                c="blue", marker="o", label="Inliers")
-    plt.scatter(X[outlier_mask], y[outlier_mask],
-                c="lightgreen", marker="s", label="Outliers")
+    plt.scatter(
+        X[inlier_mask], y[inlier_mask], c="blue", marker="o", label="Inliers"
+    )
+    plt.scatter(
+        X[outlier_mask],
+        y[outlier_mask],
+        c="lightgreen",
+        marker="s",
+        label="Outliers",
+    )
     plt.plot(line_X, line_y_ransac, color="red")
     plt.xlabel("Labor Capital Intensity")
     plt.ylabel("Labor Productivity")

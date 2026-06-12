@@ -9,8 +9,9 @@ Created on Sun Jan  8 21:24:18 2023
 
 import matplotlib.pyplot as plt
 import numpy as np
-from data.make_dataset import get_data_frame, get_X_y
 from sklearn.linear_model import Lasso
+
+from data.make_dataset import get_data_frame, get_X_y
 
 
 def main() -> None:
@@ -38,12 +39,12 @@ def main() -> None:
     # =========================================================================
     _fig, ax = plt.subplots()
     ax.plot(alphas, coefs.T)
-    ax.set_xscale('log')
+    ax.set_xscale("log")
     ax.set_xlim(alphas.max(), alphas.min())
     plt.legend()
     plt.grid()
     plt.show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
