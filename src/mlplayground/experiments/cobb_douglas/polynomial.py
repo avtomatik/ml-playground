@@ -4,18 +4,15 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import PolynomialFeatures
 
-from datasets.cobb_douglas import load as load_cobb_douglas
+from mlplayground.datasets.cobb_douglas import CobbDouglasDataset
 
-if __name__ == "__main__":
-    # =========================================================================
-    # Make Dataset
-    # =========================================================================
-    df = load_cobb_douglas()
 
-    X = df[["labor_capital_intensity"]]
-    y = df["labor_productivity"]
+def run() -> None:
+    dataset = CobbDouglasDataset()
+    X = dataset.features()
+    y = dataset.target()
 
-    solver = LinearRegression()
+    model = LinearRegression()
 
     quadratic = PolynomialFeatures(degree=2)
     cubic = PolynomialFeatures(degree=3)
@@ -26,23 +23,23 @@ if __name__ == "__main__":
     # Linear Fit
     # =========================================================================
     X_fit = np.arange(X.min(), X.max(), 1)[:, np.newaxis]
-    solver = solver.fit(X, y)
-    y_lin_fit = solver.predict(X_fit)
-    linear_r2 = r2_score(y, solver.predict(X))
+    model = model.fit(X, y)
+    y_lin_fit = model.predict(X_fit)
+    linear_r2 = r2_score(y, model.predict(X))
 
     # =========================================================================
     # Quadratic Fit
     # =========================================================================
-    solver = solver.fit(X_quad, y)
-    y_quad_fit = solver.predict(quadratic.fit_transform(X_fit))
-    quadratic_r2 = r2_score(y, solver.predict(X_quad))
+    model = model.fit(X_quad, y)
+    y_quad_fit = model.predict(quadratic.fit_transform(X_fit))
+    quadratic_r2 = r2_score(y, model.predict(X_quad))
 
     # =========================================================================
     # Cubic Fit
     # =========================================================================
-    solver = solver.fit(X_cubic, y)
-    y_cubic_fit = solver.predict(cubic.fit_transform(X_fit))
-    cubic_r2 = r2_score(y, solver.predict(X_cubic))
+    model = model.fit(X_cubic, y)
+    y_cubic_fit = model.predict(cubic.fit_transform(X_fit))
+    cubic_r2 = r2_score(y, model.predict(X_cubic))
 
     # =========================================================================
     # Plot the Results
@@ -75,3 +72,7 @@ if __name__ == "__main__":
     plt.legend(loc="upper left")
     plt.grid()
     plt.show()
+
+
+if __name__ == "__main__":
+    run()

@@ -1,11 +1,31 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from numpy.fft import rfft
 from sklearn.metrics import r2_score
 
 
+def plot_discrete_fourier_transform(array: np.ndarray) -> None:
+    # =========================================================================
+    # TODO: Refine It
+    # =========================================================================
+    plt.plot(
+        array,
+        label="Labor Productivity",
+    )
+    plt.plot(
+        rfft(array),
+        "r:",
+        label="Fourier Transform",
+    )
+    plt.grid()
+    plt.legend()
+    plt.show()
+
+
 def plot_turnover(df: pd.DataFrame) -> None:
-    """Static Fixed Assets Turnover Approximation
+    """
+    Static Fixed Assets Turnover Approximation
     ================== =================================
     df.index           Period
     df.iloc[:, 0]      Fixed Assets Turnover
