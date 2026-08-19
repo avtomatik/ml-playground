@@ -1,7 +1,7 @@
 [project]
 name = "ml-playground"
 version = "0.1.0"
-description = "Add your description here"
+description = "Research-oriented Python laboratory for classical machine learning, mathematical modeling, and data analysis."
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [

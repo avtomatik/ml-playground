@@ -17,7 +17,9 @@ class CobbDouglasDataset:
 
     @cached_property
     def dataframe(self) -> pd.DataFrame:
-        return pd.read_parquet(DATA_DIR / "bronze" / "productivity-metrics.parquet")
+        return pd.read_parquet(
+            DATA_DIR / "bronze" / "productivity-metrics.parquet"
+        )
 
     def features(self) -> pd.DataFrame:
         return self.dataframe[list(self.feature_columns)]
